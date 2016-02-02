@@ -145,8 +145,8 @@ if (  defined $p->opts->keystore ||
               . " --kspwd=\"$p->{opts}->{keystorepwd}\""
               . " --ts=\"$p->{opts}->{truststore}\"";
 }
-my $cmd = '/usr/bin/java -cp .:/usr/share/java/* '
-          . 'org.activemq.probes.OpenWireProbe '
+my $cmd = '/usr/bin/java -cp /usr/share/java/OpenWireProbe.jar:/usr/share/java/geronimo-jms_1.1_spec.jar:/usr/share/java/activemq-core.jar:/usr/share/java/glassfish-javaee.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/slf4j-nop.jar'
+          . ' org.activemq.probes.OpenWireProbe '
           . "--url=$p->{opts}->{url}"
           . " --subject='$p->{opts}->{subject}'"
           . " $ssl_opts";

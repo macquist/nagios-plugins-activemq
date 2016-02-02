@@ -2,7 +2,7 @@
 
 Summary: Nagios plugins for Apache ActiveMQ
 Name: nagios-plugins-fedcloud
-Version: 1.0.0
+Version: 1.0.0-patch-id
 Release: 1%{?dist}
 License: ASL 2.0
 Group: Network/Monitoring
