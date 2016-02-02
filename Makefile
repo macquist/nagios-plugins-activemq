@@ -16,3 +16,6 @@ sources: dist
 clean:
 	rm -rf ${PKGNAME}-${PKGVERSION}.tar.gz
 	rm -rf dist
+
+install:
+	sudo cp -t /usr/share/java src/OpenWireProbe/build/jar/OpenWireProbe-standalone.jar

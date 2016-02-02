@@ -1,47 +1,69 @@
 <project name="OpenWireProbe" basedir="." default="main">
 
-    <property name="src.dir"     value="src"/>
+  <property name="src.dir" value="src" />
 
-    <property name="build.dir"   value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir"     value="${build.dir}/jar"/>
-    <property name="activemq.classpath" value="/usr/share/java"/>
-    <property name="main-class"  value="org.activemqprobes.OpenWireProbe"/>
+  <property name="build.dir" value="build" />
+  <property name="classes.dir" value="${build.dir}/classes" />
+  <property name="jar.dir" value="${build.dir}/jar" />
+  <property name="activemq.classpath" value="/usr/share/java" />
+  <property name="main-class" value="org.activemq.probes.OpenWireProbe" />
+  <property name="standalone.jar" value="${jar.dir}/${ant.project.name}-standalone.jar" />
 
-    <path id="compile.classpath">
-     <fileset dir="${activemq.classpath}">
-       <include name="activemq-core*.jar"/>
-       <include name="geronimo-jms*.jar"/>
-     </fileset>
-    </path>
 
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
+  <path id="compile.classpath">
+    <fileset dir="${activemq.classpath}">
+      <include name="activemq-core*.jar" />
+      <include name="geronimo-jms*.jar" />
+    </fileset>
+  </path>
 
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}">
-        <classpath refid="compile.classpath"/>
-        </javac>
-    </target>
 
-    <target name="jar" depends="compile">
-        <mkdir dir="${jar.dir}"/>
-        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
-            </manifest>
-        </jar>
-    </target>
+  <fileset dir="${activemq.classpath}" id="runtime.jars">
+    <include name="activemq-core.jar" />
+    <include name="geronimo-jms_1.1_spec.jar" />
+    <include name="glassfish-javaee.jar" />
+    <include name="slf4j-api.jar" />
+    <include name="slf4j-nop.jar" />
+  </fileset>
 
-    <target name="run" depends="jar">
-        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
-    </target>
 
-    <target name="clean-build" depends="clean,jar"/>
+  <target name="clean">
+    <delete dir="${build.dir}" />
+  </target>
 
-    <target name="main" depends="clean,jar"/>
+  <target name="compile">
+    <mkdir dir="${classes.dir}" />
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+      <classpath refid="compile.classpath" />
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${jar.dir}" />
+    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="standalone-jar" depends="compile">
+    <mkdir dir="${jar.dir}" />
+    <jar destfile="${standalone.jar}" basedir="${classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}" />
+      </manifest>
+      <zipgroupfileset refid="runtime.jars" />
+    </jar>
+  </target>
+
+  <target name="run" depends="jar">
+    <java jar="${jar.dir}/${ant.project.name}.jar" fork="true" />
+  </target>
+
+  <target name="clean-build" depends="clean,jar" />
+
+  <target name="main" depends="clean,jar,standalone-jar" />
 
 </project>
 
