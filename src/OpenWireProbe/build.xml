@@ -10,7 +10,8 @@
 
     <path id="compile.classpath">
      <fileset dir="${activemq.classpath}">
-       <include name="activemq-all*.jar"/>
+       <include name="activemq-core*.jar"/>
+       <include name="geronimo-jms*.jar"/>
      </fileset>
     </path>
 
